@@ -1,5 +1,17 @@
 # Motif-search
 
+Script to search motifs in fasta files.
+
+### Options:
+
+| Short | Option | Type | Default | Description |
+|--------|-------|------|---------|-------------|
+  |`-h`| `--help  `          |||show this help message and exit|
+  |`-i`| `--inp INP  `       |path|Required|Input fasta file|
+  |`-m`| `--motif MOTIF`   |string|Required|Motif to be searched|
+  |`-p`| `--relax_perc` |float|100|Relaxed percentage similarity|
+  |`-o`| `--out `         |string|motif_result.txt|Output file|
+
 ## motif-search v2
 
 Refactoring code for better readability, adding fixes and features.
