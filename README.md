@@ -2,6 +2,12 @@
 
 Script to search motifs in fasta files.
 
+### Usage
+
+```bash
+python motif-search-v2.py [OPTIONS]
+```
+
 ### Options:
 
 | Short | Option | Type | Default | Description |
