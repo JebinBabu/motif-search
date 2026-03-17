@@ -50,7 +50,7 @@ def searchForMotif(genome):
     with open(args.out.replace("motif",args.motif),"w") as outfile:
         si = 0
 
-        header = "#\tLocation\tQuery\tMotif\tSimilarity %\n"
+        header = "#\tLocation\tQuery\tMotif\tMismatches\tSimilarity %\n"
 
         outfile.write(header)
 
@@ -83,7 +83,7 @@ def searchForMotif(genome):
                 si += 1
                 percSimilarity = int((similar/motifSize)*100)
 
-                result = f"{si}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{percSimilarity}\n"
+                result = f"{si}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{motifSize-similar}\t{percSimilarity}\n"
 
                 outfile.write(result)
 
