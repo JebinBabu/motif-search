@@ -3,7 +3,7 @@ parser = argparse.ArgumentParser(description="A script to find motifs in a fasta
 
 parser.add_argument("-i","--inp", type=str, help="Input fasta file", required=True)
 parser.add_argument("-m","--motif", type=str, help="Motif", required=True)
-parser.add_argument("-p","--rel_perc", type=str, help="Relaxed percentage similarity", default=100)
+parser.add_argument("-p","--relax_perc", type=str, help="Relaxed percentage similarity", default=100)
 parser.add_argument("-o","--out", type=str, help="Output file", default="motif_result.txt")
 
 args = parser.parse_args()
@@ -13,7 +13,7 @@ print(f'Searching for {args.motif}\n')
 #gathering inputs
 f = args.inp
 m = args.motif
-s = args.perc
+s = args.relax_perc
 
 
 # preparing inputs
@@ -28,52 +28,46 @@ similarity = float(s)/100
 
 def searchForMotif(genome):
 
-    si = 0
+    with open(args.out.replace("motif",args.motif),"w") as outfile:
+        si = 0
 
-    result = ['#','\t','Location','\t','Motif','\t','Similarity %','\n']
+        header = "#\tLocation\tQuery\tMotif\tSimilarity %\n"
 
-    for baseID,base in enumerate(genome):
+        outfile.write(header)
 
-    
-        end = baseID + motifSize
+        for baseID,base in enumerate(genome):
 
-        unkMotif = []
+        
+            end = baseID + motifSize
 
-        similar = motifSize
+            unkMotif = []
 
-        for unkBaseID,unkBase in enumerate(genome[baseID:end]):
+            similar = motifSize
 
-            if unkBase == motif[unkBaseID]:
+            for unkBaseID,unkBase in enumerate(genome[baseID:end]):
 
-                unkMotif += unkBase
+                if unkBase == motif[unkBaseID]:
 
-            else:
+                    unkMotif += unkBase
 
-                similar -= 1
+                else:
 
-                unkMotif += unkBase
+                    similar -= 1
 
-
-
-
-        if (similar >= similarity * motifSize) and (len(unkMotif) == motifSize):
-
-            si += 1
-            percSimilarity = int((similar/motifSize)*100)
-
-            result += [str(si),'\t',str(baseID + 1),'\t',str(unkMotif),'\t',str(percSimilarity),'\n']
-
-    
-    return result
+                    unkMotif += unkBase
 
 
 
-def resultFile(data):
 
-    newData = ''.join(data)
-    result = open('result.txt','w')
-    result.write(newData)
-    print('Data saved as \'result.txt\' file.\n')
+            if (similar >= similarity * motifSize) and (len(unkMotif) == motifSize):
+
+                si += 1
+                percSimilarity = int((similar/motifSize)*100)
+
+                result = f"{si}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{percSimilarity}\n"
+
+                outfile.write(result)
+
 
 
 for line in content[1::]:
@@ -94,7 +88,4 @@ for line in content[1::]:
 
 
 # finding similar motifs
-result = searchForMotif(genome)
-
-#saving result as result.txt file
-resultFile(result)
+searchForMotif(genome)
