@@ -1,6 +1,8 @@
-# Motif-search-v1
+# Motif-search
 
-## A simple motif search code that I wrote during my master's during my introduction to computational biology
+## motif-search v1
+
+### A simple motif search code that I wrote during my master's during my introduction to computational biology
 
 
 
