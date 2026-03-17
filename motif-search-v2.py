@@ -15,16 +15,35 @@ f = args.inp
 m = args.motif
 s = args.relax_perc
 
-
-# preparing inputs
-file = open(f,'r')
-content = file.readlines()
-file.close()
-
-genome = []
 motif = list(m)
 motifSize = len(motif)
 similarity = float(s)/100
+
+chromosomes = {}
+genome = []
+
+# Reading genome file 
+
+with open(args.inp, 'r') as genome_file:
+
+    # chrom_head = ""
+    # chrom = []
+
+    while True:
+
+        line = genome_file.readline()
+
+        if len(line) == 0:
+            break
+        
+        if '>' in line:
+
+            chrom_head = line.split(' ')[0][1:]
+
+
+        genome += list(line)
+
+
 
 def searchForMotif(genome):
 
@@ -67,24 +86,6 @@ def searchForMotif(genome):
                 result = f"{si}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{percSimilarity}\n"
 
                 outfile.write(result)
-
-
-
-for line in content[1::]:
-
-    if '>' in line:
-        continue
-
-    newArr = []
-
-    for el in line:
-
-        if el == '\n':
-            continue
-        else:
-            newArr.append(el)
-
-    genome += newArr
 
 
 # finding similar motifs
