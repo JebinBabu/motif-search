@@ -1,20 +1,12 @@
 # A simple motif search code that I wrote during my master's during my introduction to computaional biology
 
-import argparse
-parser = argparse.ArgumentParser(description="A script that downloads genome files from NCBI using the assembly accession numbers")
-
-parser.add_argument("-i","--inp", type=str, help="input fasta file", required=True)
-parser.add_argument("-m","--motif", type=str, required=True)
-parser.add_argument("-s","--sim", type=str, help="percentage similarity", default=100)
-
-args = parser.parse_args()
-
-print('Locating Motifs')
+print('Motif Search')
+print('------------')
 
 #gathering inputs
-f = args.inp
-m = args.motif
-s = args.sim
+f = str(input("Input fasta file: "))
+m = str(input("Motif: "))
+s = int(input("Relaxed percentage similarity: "))
 
 
 # preparing inputs
@@ -22,8 +14,8 @@ file = open(f,'r')
 content = file.readlines()
 file.close()
 
-genome = []
-motif = list(m)
+genome = ""
+motif = m
 motifSize = len(motif)
 similarity = int(s)/100
 
@@ -38,7 +30,7 @@ def searchForMotif(genome):
     
         end = baseID + motifSize
 
-        unkMotif = []
+        unkMotif = ""
 
         similar = motifSize
 
@@ -62,7 +54,7 @@ def searchForMotif(genome):
             si += 1
             percSimilarity = int((similar/motifSize)*100)
 
-            result += [str(si),'\t',str(baseID + 1),'\t',str("".join(unkMotif)),'\t',str(percSimilarity),'\n']
+            result += [str(si),'\t',str(baseID + 1),'\t',str(unkMotif),'\t',str(percSimilarity),'\n']
 
     
     print('Done')
@@ -80,14 +72,14 @@ def resultFile(data):
 
 for line in content[1::]:
 
-    newArr = []
+    newArr = ""
 
     for el in line:
 
         if el == '\n':
             continue
         else:
-            newArr.append(el)
+            newArr += el
 
     genome += newArr
 
