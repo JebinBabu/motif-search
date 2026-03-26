@@ -1,6 +1,6 @@
 # Motif-search
 
-Script to search motifs in fasta files.
+Script to search location of motifs in fasta files.
 
 ### Usage
 
@@ -16,7 +16,7 @@ python motif-search-v2.py [OPTIONS]
   |`-i`| `--inp`       |path|Required|Input fasta file|
   |`-m`| `--motif`   |string|Required|Motif to be searched|
   |`-p`| `--relax_perc` |float|100|Relaxed percentage similarity|
-  |`-o`| `--out `         |string|motif_result.txt|Output file|
+  |`-o`| `--out `         |path|motif_result.txt|Output file|
 
 ## motif-search v2
 
