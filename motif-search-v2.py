@@ -19,19 +19,20 @@ motif = list(m)
 motifSize = len(motif)
 similarity = float(s)/100
 
-chromosomes = {}
-genome = []
+
+chromosomes = []
+chromosome_ids = []
+
 
 # Reading genome file 
 
 with open(args.inp, 'r') as genome_file:
 
-    # chrom_head = ""
-    # chrom = []
+    new_chromososme = []
 
     while True:
 
-        line = genome_file.readline()
+        line = genome_file.readline()[:-1]
 
         if len(line) == 0:
             break
@@ -39,54 +40,70 @@ with open(args.inp, 'r') as genome_file:
         if '>' in line:
 
             chrom_head = line.split(' ')[0][1:]
+            chromosome_ids.append(chrom_head)
+            
+            if len(new_chromososme) > 0:
 
+                chromosomes.append(new_chromososme)
+                new_chromososme = []
 
-        genome += list(line)
+        else:
 
+            new_chromososme += list(line)
 
-
-def searchForMotif(genome):
-
-    with open(args.out.replace("motif",args.motif),"w") as outfile:
-        si = 0
-
-        header = "#\tLocation\tQuery\tMotif\tMismatches\tSimilarity %\n"
-
-        outfile.write(header)
-
-        for baseID,base in enumerate(genome):
-
-        
-            end = baseID + motifSize
-
-            unkMotif = []
-
-            similar = motifSize
-
-            for unkBaseID,unkBase in enumerate(genome[baseID:end]):
-
-                if unkBase == motif[unkBaseID]:
-
-                    unkMotif += unkBase
-
-                else:
-
-                    similar -= 1
-
-                    unkMotif += unkBase
+    chromosomes.append(new_chromososme)
+    new_chromososme = []
 
 
 
 
-            if (similar >= similarity * motifSize) and (len(unkMotif) == motifSize):
+def searchForMotif(chromosome, chromosome_id):
 
-                si += 1
-                percSimilarity = int((similar/motifSize)*100)
+    si = 0
 
-                result = f"{si}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{motifSize-similar}\t{percSimilarity}\n"
+    for baseID,base in enumerate(chromosome):
 
-                outfile.write(result)
+    
+        end = baseID + motifSize
+
+        unkMotif = []
+
+        similar = motifSize
+
+        for unkBaseID,unkBase in enumerate(chromosome[baseID:end]):
+
+            if unkBase == motif[unkBaseID]:
+
+                unkMotif += unkBase
+
+            else:
+
+                similar -= 1
+
+                unkMotif += unkBase
+
+
+
+
+        if (similar >= similarity * motifSize) and (len(unkMotif) == motifSize):
+
+            si += 1
+            percSimilarity = int((similar/motifSize)*100)
+
+            result = f"{si}\t{chromosome_id}\t{baseID + 1}\t{args.motif}\t{("".join(unkMotif))}\t{motifSize-similar}\t{percSimilarity}\n"
+
+            outfile.write(result)
 
 
 # finding similar motifs
-searchForMotif(genome)
+
+with open(args.out.replace("motif",args.motif),"w") as outfile:
+
+    header = "#\tChromosome_ID\tLocation\tQuery\tMotif\tMismatches\tSimilarity %\n"
+    outfile.write(header)
+
+    for chromosome_id, chromosome in zip(chromosome_ids, chromosomes):
+
+        print(len(chromosome), chromosome_id)
+
+        searchForMotif(chromosome, chromosome_id)
