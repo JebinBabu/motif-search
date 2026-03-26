@@ -37,8 +37,9 @@ Refactoring code for better readability, adding fixes and features.
 ### Future:
 
 1. Option to include gaps.
-2. Option to include bedfile with selected regions for motif search
-3. Multiple motif searches
+2. Option to include bedfile with selected regions for motif search.
+3. Multiple motif searches.
+4. Levenshtein distance scoring.
 
 
 ## motif-search v1
