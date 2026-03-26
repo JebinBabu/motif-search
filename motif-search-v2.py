@@ -104,6 +104,4 @@ with open(args.out.replace("motif",args.motif),"w") as outfile:
 
     for chromosome_id, chromosome in zip(chromosome_ids, chromosomes):
 
-        print(len(chromosome), chromosome_id)
-
         searchForMotif(chromosome, chromosome_id)
